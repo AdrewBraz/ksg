@@ -2,9 +2,21 @@
   "name": "ksg",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "app": "dist/bin/app.js"
+  },
+  "engines": {
+    "node": "15.0.0",
+    "npm": "6"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "build-server": "babel server --out-dir dist --source-maps inline",
+    "build-app": "npx webpack --env production",
+    "build": "npm run build-app && npm run build-server",
+    "postinstall": "npm run build",
+    "start": "babel-node ./server/bin/app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +32,7 @@
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "bootstrap": "^4.5.3",
+    "classnames": "^2.2.6",
     "core-js": "^3.8.1",
     "cssnano": "^4.1.10",
     "fastify": "^3.9.2",
@@ -38,6 +51,7 @@
     "postcss-preset-env": "^6.7.0",
     "pug": "^3.0.0",
     "react": "^17.0.1",
+    "react-autosuggest": "^10.0.4",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
@@ -51,9 +65,11 @@
     "yup": "^0.32.8"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.12.12",
     "@types/jest": "^26.0.19",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
+    "css-loader": "^5.0.1",
     "eslint": "^7.16.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-import-resolver-webpack": "^0.13.0",
