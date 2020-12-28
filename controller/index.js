@@ -1,3 +1,4 @@
+//@ts-check
 import mongoose from 'mongoose';
 import model from '../model';
 

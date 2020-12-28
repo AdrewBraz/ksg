@@ -5,6 +5,7 @@ const componentSlice = createSlice({
   initialState: { list: [], filters: {} },
   reducers: {
     addState(state, { payload }) {
+      console.log(payload);
       state.list = payload;
     },
     addFilters(state, { payload }) {
@@ -14,17 +15,12 @@ const componentSlice = createSlice({
 });
 
 export const getList = ({ compState }) => compState.list;
-const getFilters = ({ compState }) => compState.filters;
+const getValue = ({ appState }) => appState.value;
 
-export const CompSelector = createSelector(getList, (list) => list);
-export const CompFiltered = createSelector([CompSelector, getFilters],
-  (list, filters) => {
-    const keys = Object.keys(filters);
-    return keys.length === 0 ? list : keys.reduce((acc, key) => {
-      const value = filters[key];
-      return acc.filter((item) => item[key] === value);
-    }, list);
-  });
+export const CompSelector = createSelector([getList, getValue], (list, value) => {
+  const regex = new RegExp(`^${value}$`, 'gi');
+  return list.filter((item) => item.MKB_1.search(regex) !== -1);
+});
 
 export const { addFilters, addState } = componentSlice.actions;
 

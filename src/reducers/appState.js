@@ -1,4 +1,15 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const fetchData = createAsyncThunk(
+  'ksg/fetchData',
+  async (value, thunkAPI) => {
+    const result = await axios(`/search?ds=${value}`)
+      .then(({ data }) => data)
+      .catch(() => console.log('fail'));
+    return result;
+  },
+);
 
 const storeSlice = createSlice({
   name: 'ksg',
@@ -6,15 +17,12 @@ const storeSlice = createSlice({
     list: [], value: '', status: 'empty', ds: '',
   },
   reducers: {
-    fetchData(state, { payload }) {
-      state.list = payload;
-    },
     addTextValue(state, { payload }) {
-      state.value = payload;
+      void (state.value = payload);
     },
     clearDataList(state) {
       state.list = [];
-      return state.list;
+      return state;
     },
     mkbSelected(state) {
       state.status = 'selected';
@@ -23,25 +31,24 @@ const storeSlice = createSlice({
       state.status = 'empty';
     },
   },
+  extraReducers: {
+    [fetchData.fulfilled](state, { payload }) {
+      state.list = payload;
+      return state;
+    },
+  },
 });
 
 const getValue = ({ appState }) => appState.value;
 const getList = ({ appState }) => appState.list;
-const getStatus = ({ appState }) => appState.status;
+const getDs = ({ appState }) => appState.ds;
 
-export const FilterSelector = createSelector([getValue, getList, getStatus],
-  (value, list, status) => {
-    if (status === 'empty') {
-      console.log(status);
-      return list.filter((item) => item.MKB_1.search(new RegExp(`^${value}`, 'gi')) !== -1);
-    }
-    if (status === 'selected') {
-      return list.filter((item) => item.MKB_1.search(new RegExp(`^${value}$`, 'gi')) !== -1);
-    }
-  });
+export const FilterSelector = createSelector([getList],
+  (list) => list);
 
 export const {
-  fetchData, addTextValue, clearDataList, mkbDeleted, mkbSelected,
+  addTextValue, clearDataList, mkbDeleted, mkbSelected, addDsValue,
 } = storeSlice.actions;
+export { fetchData };
 
 export default storeSlice.reducer;

@@ -52,17 +52,6 @@ const Form = (props) => {
 
   return (
     <form onChange={handleChange(form.values)} id="filters" className="form-inline mb-3">
-      <div className="form-group align-items-end justify-content-around flex-row w-100">
-        {filterKeys.map((key) => (
-          <div key={key} className={`form-group col-md-${12 / filterKeys.length}`}>
-            <label htmlFor={key}>Выберите значение</label>
-            <select className="form-control w-100" onChange={form.handleChange} name={`${key}`} id={`${key}`}>
-              <option value="">Выберите значение</option>
-              {filterList[key].map((item) => <option key={`${item}`} value={item.split(' ')[0]}>{item}</option>)}
-            </select>
-          </div>
-        ))}
-      </div>
     </form>
   );
 };
