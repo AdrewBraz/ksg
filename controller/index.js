@@ -1,13 +1,14 @@
-//@ts-check
 import mongoose from 'mongoose';
 import model from '../model';
 
 const dataController = async (_req, reply) => {
   const { ds } = _req.query;
-  const coll = await model.aggregate([
+
+  const coll = ds.length <= 1 ? [] : await model.aggregate([
     { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' } } },
+    { $project: { _id: 0, GROUP_NUM: 0 } },
   ]);
-  console.log(coll.length);
+  console.log(coll, ds);
   reply.send(coll);
 };
 

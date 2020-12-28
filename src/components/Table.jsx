@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { useSelector } from 'react-redux';
 
 const TableKsg = (props) => {
-  const list = useSelector(({ compState }) => compState.list);
+  const list = useSelector((state) => state.compState.list);
   const { status } = props;
   console.log(list);
   const keys = Object.keys(list[0]);
@@ -43,7 +43,7 @@ const TableKsg = (props) => {
     );
   };
   return (
-    // <>{list.length > 0 && status === 'selected' ? renderTable(list) : null}</>
+    <>{list.length > 0 && status === 'selected' ? renderTable(list) : null}</>
   );
 };
 export default TableKsg;
