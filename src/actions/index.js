@@ -10,5 +10,5 @@ export default {
   mkbDeleted,
   mkbSelected,
   addState,
-  addFilters
+  addFilters,
 };

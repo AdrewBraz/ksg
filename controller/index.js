@@ -6,9 +6,8 @@ const dataController = async (_req, reply) => {
 
   const coll = ds.length <= 1 ? [] : await model.aggregate([
     { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' } } },
-    { $project: { _id: 0, GROUP_NUM: 0 } },
+    { $project: { _id: 0, GROUP_NUM: 0, __v: 0 } },
   ]);
-  console.log(coll, ds);
   reply.send(coll);
 };
 

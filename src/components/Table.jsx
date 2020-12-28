@@ -1,14 +1,28 @@
-//@ts-check
+// @ts-check
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import cn from 'classnames';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 
 const TableKsg = (props) => {
   const list = useSelector((state) => state.compState.list);
+  const ruNames = {
+    MKB_1: 'Код МКБ',
+    MAIN_DS: 'Основной диагноз',
+    MKB_2: 'Код МКБ(2)',
+    ADD_DS: 'Дополнительный диагноз',
+    MKB_3: 'Код МКБ(3)',
+    COM_DS: 'Диагноз осложнения',
+    COD_USL: 'Код услуги',
+    USL_NAME: 'Название услуги',
+    DIFF_CRITERIA: 'Иной классификационный критерий',
+    KSG: 'КСГ',
+    KSG_NAME: 'Расшифровка КСГ',
+    AGE: 'ВОЗРАСТ',
+    SEX: 'ПОЛ',
+    DURATION: 'Длительность',
+  };
   const { status } = props;
-  console.log(list);
   const keys = Object.keys(list[0]);
   const filteredKeys = keys.reduce((acc, key) => {
     const result = _.uniqBy(list, key)
@@ -27,23 +41,20 @@ const TableKsg = (props) => {
       </tr>
     ))
   );
-  const renderTable = (list) => {
-    const columnNames = Object.keys(list[0]);
-    return (
-      <Table style={{ position: 'relative' }} size="sm" striped bordered hover responsive>
-        <thead>
-          <tr>
-            {columnNames.map((name) => <th style={{ position: 'sticky', top: '0' }} key={name}>{list[name]}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {renderItems(list)}
-        </tbody>
-      </Table>
-    );
-  };
+  const renderTable = (list) => (
+    <Table size="sm" striped bordered hover responsive>
+      <thead>
+        <tr style={{ position: 'sticky', top: '0', background: 'white' }}>
+          {columnNames.map((name) => <th style={{ position: 'sticky', top: '0', background: 'white' }} key={name}>{ruNames[name]}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {renderItems(list)}
+      </tbody>
+    </Table>
+  );
   return (
-    <>{list.length > 0 && status === 'selected' ? renderTable(list) : null}</>
+    <div>{list.length > 0 && status === 'selected' ? renderTable(list) : null}</div>
   );
 };
 export default TableKsg;
