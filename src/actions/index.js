@@ -10,6 +10,5 @@ export default {
   mkbDeleted,
   mkbSelected,
   addState,
-  addFilters,
-  addDsValue,
+  addFilters
 };
