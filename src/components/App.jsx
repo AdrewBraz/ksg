@@ -13,7 +13,7 @@ const App = () => {
   const inputRef = useRef(null);
   const list = useSelector(FilterSelector);
   const dispatch = useDispatch();
-  useEffect(() => (list.length > 0 ? dispatch(actions.addState(list)) : list), [list]);
+  // useEffect(() => (list.length > 0 ? dispatch(actions.addState(list)) : list), [list]);
   const getData = async (value) => {
     await dispatch(actions.fetchData(value));
   };
@@ -23,10 +23,9 @@ const App = () => {
   const renderSuggestion = (suggestion) => (<span>{`${suggestion.MKB_1} - ${suggestion.MAIN_DS}`}</span>);
 
   const handleChange = async (e, { newValue }) => {
-    if (newValue.length > 0) {
+      status === 'selected' ? dispatch(actions.mkbDeleted()) : null
       await dispatch(actions.addTextValue(newValue));
       await getData(newValue);
-    }
   };
 
   const handleClear = () => {
@@ -43,7 +42,6 @@ const App = () => {
   const inputProps = {
     placeholder: 'Введите код диагноза',
     value,
-    onBlur: (e) => { console.log(e.type); },
     onChange: handleChange,
   };
 
@@ -57,7 +55,7 @@ const App = () => {
             suggestions={getSuggestions}
             getSuggestionValue={getSuggestionsValue}
             onSuggestionsFetchRequested={() => { handleChange; }}
-            onSuggestionsClearRequested={() => { handleClear(); }}
+            onSuggestionsClearRequested={() => {  }}
             onSuggestionSelected={(e, { suggestion }) => { handleSelect(e, { suggestion }); }}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const fetchData = createAsyncThunk(
   'ksg/fetchData',
-  async (value, thunkAPI) => {
+  async (value) => {
     const result = await axios(`/search?ds=${value}`)
       .then(({ data }) => data)
       .catch(() => console.log('fail'));
@@ -14,11 +14,12 @@ const fetchData = createAsyncThunk(
 const storeSlice = createSlice({
   name: 'ksg',
   initialState: {
-    list: [], value: '', status: 'empty', ds: '',
+    list: [], value: '', status: 'empty',
   },
   reducers: {
     addTextValue(state, { payload }) {
-      void (state.value = payload);
+      state.value = payload;
+      return state;
     },
     clearDataList(state) {
       state.list = [];
@@ -26,9 +27,11 @@ const storeSlice = createSlice({
     },
     mkbSelected(state) {
       state.status = 'selected';
+      return state;
     },
     mkbDeleted(state) {
       state.status = 'empty';
+      return state;
     },
   },
   extraReducers: {
@@ -41,13 +44,18 @@ const storeSlice = createSlice({
 
 const getValue = ({ appState }) => appState.value;
 const getList = ({ appState }) => appState.list;
-const getDs = ({ appState }) => appState.ds;
+const getStatus = ({ appState }) => appState.status;
 
-export const FilterSelector = createSelector([getList],
-  (list) => list);
+export const FilterSelector = createSelector([getList, getValue],
+  (list, value) => {
+    const regex = new RegExp(`^${value}`, 'i');
+    const result = list.filter((item) => item.MKB_1.search(regex) !== -1);
+    console.log(result, list);
+    return result
+  });
 
 export const {
-  addTextValue, clearDataList, mkbDeleted, mkbSelected, addDsValue,
+  addTextValue, clearDataList, mkbDeleted, mkbSelected,
 } = storeSlice.actions;
 export { fetchData };
 
