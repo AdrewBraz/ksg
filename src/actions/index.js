@@ -1,14 +1,13 @@
 import {
-  fetchData, addTextValue, clearDataList, mkbDeleted, mkbSelected, addDsValue,
+  fetchData, addTextValue, changeStatus,
 } from '../reducers/appState';
-import { addState, addFilters } from '../reducers/compState';
+import { addState, clearDataList, addFilters } from '../reducers/compState';
 
 export default {
   fetchData,
   addTextValue,
   clearDataList,
-  mkbDeleted,
-  mkbSelected,
+  changeStatus,
   addState,
   addFilters,
 };

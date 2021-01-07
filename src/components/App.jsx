@@ -13,9 +13,9 @@ const App = () => {
   const inputRef = useRef(null);
   const list = useSelector(FilterSelector);
   const dispatch = useDispatch();
-  // useEffect(() => (list.length > 0 ? dispatch(actions.addState(list)) : list), [list]);
-  const getData = async (value) => {
-    await dispatch(actions.fetchData(value));
+  useEffect(() => (list.length > 0 ? dispatch(actions.addState(list)) : list), [list]);
+  const getData = async (inputValue) => {
+    await dispatch(actions.fetchData(inputValue));
   };
   const getSuggestions = sortBy(uniqBy(list, 'MKB_1'), 'MKB_1');
   const getSuggestionsValue = (item) => item.MKB_1;
@@ -23,19 +23,24 @@ const App = () => {
   const renderSuggestion = (suggestion) => (<span>{`${suggestion.MKB_1} - ${suggestion.MAIN_DS}`}</span>);
 
   const handleChange = async (e, { newValue }) => {
-      status === 'selected' ? dispatch(actions.mkbDeleted()) : null
-      await dispatch(actions.addTextValue(newValue));
+    if (status === 'selected') {
+      dispatch(actions.changeStatus('not selected'));
+      dispatch(actions.clearDataList());
+    }
+    await dispatch(actions.addTextValue(newValue));
+    if (newValue.length === 2) {
       await getData(newValue);
+    }
   };
 
   const handleClear = () => {
-    dispatch(actions.clearDataList());
+    inputRef.current.input.blur();
   };
 
   const handleSelect = async (e, { suggestion }) => {
-    const value = suggestion.MKB_1;
-    await handleChange(e, { newValue: value });
-    dispatch(actions.mkbSelected());
+    const MKB = suggestion.MKB_1;
+    await handleChange(e, { newValue: MKB });
+    dispatch(actions.changeStatus('selected'));
     inputRef.current.onSuggestionsClearRequested();
   };
 
@@ -43,6 +48,7 @@ const App = () => {
     placeholder: 'Введите код диагноза',
     value,
     onChange: handleChange,
+    onBlur: () => { dispatch(actions.changeStatus('not selected')) },
   };
 
   return (
@@ -55,14 +61,14 @@ const App = () => {
             suggestions={getSuggestions}
             getSuggestionValue={getSuggestionsValue}
             onSuggestionsFetchRequested={() => { handleChange; }}
-            onSuggestionsClearRequested={() => {  }}
+            onSuggestionsClearRequested={() => { handleClear(); }}
             onSuggestionSelected={(e, { suggestion }) => { handleSelect(e, { suggestion }); }}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />
         </div>
       </Jumbotron>
-      {tableList.length > 0 && status === 'selected' ? <Table status={status} /> : null}
+      {status === 'selected' ? <Table status={status} /> : null}
     </>
   );
 };

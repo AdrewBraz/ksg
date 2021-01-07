@@ -5,11 +5,14 @@ const componentSlice = createSlice({
   initialState: { list: [], filters: {} },
   reducers: {
     addState(state, { payload }) {
-      console.log(payload);
       state.list = payload;
     },
     addFilters(state, { payload }) {
       state.filters = payload;
+    },
+    clearDataList(state) {
+      state.list = [];
+      return state;
     },
   },
 });
@@ -22,6 +25,6 @@ export const CompSelector = createSelector([getList, getValue], (list, value) =>
   return list.filter((item) => item.MKB_1.search(regex) !== -1);
 });
 
-export const { addFilters, addState } = componentSlice.actions;
+export const { addFilters, addState, clearDataList } = componentSlice.actions;
 
 export default componentSlice.reducer;

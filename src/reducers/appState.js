@@ -21,16 +21,8 @@ const storeSlice = createSlice({
       state.value = payload;
       return state;
     },
-    clearDataList(state) {
-      state.list = [];
-      return state;
-    },
-    mkbSelected(state) {
-      state.status = 'selected';
-      return state;
-    },
-    mkbDeleted(state) {
-      state.status = 'empty';
+    changeStatus(state, { payload }) {
+      state.status = payload;
       return state;
     },
   },
@@ -44,18 +36,15 @@ const storeSlice = createSlice({
 
 const getValue = ({ appState }) => appState.value;
 const getList = ({ appState }) => appState.list;
-const getStatus = ({ appState }) => appState.status;
 
 export const FilterSelector = createSelector([getList, getValue],
   (list, value) => {
     const regex = new RegExp(`^${value}`, 'i');
-    const result = list.filter((item) => item.MKB_1.search(regex) !== -1);
-    console.log(result, list);
-    return result
+    return list.filter((item) => regex.test(item.MKB_1));
   });
 
 export const {
-  addTextValue, clearDataList, mkbDeleted, mkbSelected,
+  addTextValue, changeStatus,
 } = storeSlice.actions;
 export { fetchData };
 

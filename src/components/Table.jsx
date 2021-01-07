@@ -3,9 +3,10 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
+import { CompSelector } from '../reducers/compState';
 
 const TableKsg = (props) => {
-  const list = useSelector((state) => state.compState.list);
+  const list = useSelector(CompSelector);
   const ruNames = {
     MKB_1: 'Код МКБ',
     MAIN_DS: 'Основной диагноз',
@@ -34,14 +35,14 @@ const TableKsg = (props) => {
     return acc;
   }, {});
   const columnNames = Object.keys(filteredKeys);
-  const renderItems = (list) => (
-    list.map((item, i) => (
+  const renderItems = (rowList) => (
+    rowList.map((item, i) => (
       <tr key={item.MKB_1 + i}>
         {columnNames.map((name, j) => <td key={`${name + j}`}>{item[name]}</td>)}
       </tr>
     ))
   );
-  const renderTable = (list) => (
+  const renderTable = (ksgList) => (
     <Table size="sm" striped bordered hover responsive>
       <thead>
         <tr style={{ position: 'sticky', top: '0', background: 'white' }}>
@@ -49,7 +50,7 @@ const TableKsg = (props) => {
         </tr>
       </thead>
       <tbody>
-        {renderItems(list)}
+        {renderItems(ksgList)}
       </tbody>
     </Table>
   );

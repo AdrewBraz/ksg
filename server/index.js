@@ -36,7 +36,7 @@ const setUpStaticAssets = (app) => {
   });
 };
 
-export default (state = {}) => {
+export default () => {
   const app = fastify();
 
   setUpViews(app);
