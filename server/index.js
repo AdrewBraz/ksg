@@ -5,6 +5,7 @@ import fastify from 'fastify';
 import pointOfView from 'point-of-view';
 import fastifyStatic from 'fastify-static';
 import mongoose from 'mongoose';
+import multer from 'fastify-multer';
 import addRoutes from './routes.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -41,6 +42,7 @@ export default () => {
 
   setUpViews(app);
   setUpStaticAssets(app);
+  app.register(multer.contentParser);
   addRoutes(app);
 
   return app;
