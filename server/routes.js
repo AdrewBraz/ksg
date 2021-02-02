@@ -1,7 +1,7 @@
 // @ts-check
 import multer from 'fastify-multer';
 import parser from './parser';
-import dataController from '../controller';
+import { dsController, uslController} from '../controller';
 import path from 'path';
 import fs from 'fs'
 import getVmpData from './getVmpData';
@@ -21,8 +21,11 @@ export default (router) => router
   .get('/', (req, reply) => {
     reply.view('index.pug');
   })
-  .get('/search', async (_req, reply) => {
-    await dataController(_req, reply);
+  .get('/search_ds', async (_req, reply) => {
+    await dsController(_req, reply);
+  })
+  .get('/search_usl', async (_req, reply) => {
+    await uslController(_req, reply);
   })
   .post('/calculate',
     { preHandler: upload.single('excel') },

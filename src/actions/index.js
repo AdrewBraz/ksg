@@ -1,13 +1,16 @@
 import {
-  fetchData, addTextValue, changeStatus,
+  fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, changeStatus, changeType
 } from '../reducers/appState';
 import { addState, clearDataList, addFilters } from '../reducers/compState';
 
 export default {
-  fetchData,
-  addTextValue,
+  fetchDataByDS,
+  fetchDataByUsl,
+  addDsValue,
+  addUslValue,
   clearDataList,
   changeStatus,
   addState,
   addFilters,
+  changeType
 };
