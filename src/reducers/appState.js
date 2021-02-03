@@ -70,7 +70,7 @@ const getFilters = ({ appState }) => ({ diagnos: appState.diagnos.value, usl: ap
 const getList = ({ appState }) => appState.list;
 
 export const FilterSelector = createSelector([getList, getFilters],
-  (list, filters) => {
+  (list = [], filters) => {
     const { diagnos, usl } = filters;
     const regex1 = new RegExp(`^${diagnos}`, 'i');
     const regex2 = new RegExp(`^${usl}`, 'i');

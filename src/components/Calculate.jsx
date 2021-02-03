@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import _, {isEqual} from 'lodash';
+import _, { isEqual } from 'lodash';
 import actions from '../actions';
 import Select from './Select';
 import SearchInput from './SearchInput';
@@ -28,22 +28,21 @@ const Search = () => {
   const selectRef = useRef(null);
 
   const data = Object.keys(filters).length > 0
-      ? _.filter(list, filters)
-      : list;
-  const previousState = usePrevious(data)
+    ? _.filter(list, filters)
+    : list;
+  const previousState = usePrevious(data);
   useEffect(() => {
     const kslp = age > 75 ? 1.1 : 1;
-    dispatch(actions.addKSG({kz, ks, kslp}))
-  }, [age])
+    dispatch(actions.addKSG({ kz, ks, kslp }));
+  }, [age]);
 
   useEffect(() => {
-      if (previousState && !isEqual(previousState, data)) {
-        console.log(list)
-        const kz = data.hasMin('RATIO').RATIO;
-        const ks = kz >= 2 ? 1.4 : 0.8;
-        const kslp = age > 75 ? 1.1 : 1;
-        dispatch(actions.addKSG({ kz, ks, kslp }));
-      };
+    if (previousState && !isEqual(previousState, data)) {
+      const kz = list.length > 0 ? data.hasMin('RATIO').RATIO : 1;
+      const ks = kz >= 2 ? 1.4 : 0.8;
+      const kslp = age > 75 ? 1.1 : 1;
+      dispatch(actions.addKSG({ kz, ks, kslp }));
+    }
   }, [data]);
 
   const handleAge = () => {
