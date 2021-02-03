@@ -5,7 +5,7 @@ const vmpCodes = [200409, 200510, 200518, 200519, 200520, 200524, 200522, 200523
 export default async (data) => {
   const vmpData = await vmpController();
   const filteredData = data.filter((item) => vmpCodes.includes(item.COD));
-  console.log(filteredData)
+  console.log(filteredData);
   const result = filteredData.reduce((acc, item) => {
     if (acc.hasOwnProperty(item.COD)) {
       acc[item.COD].count = acc[item.COD].count + 1;
@@ -21,5 +21,5 @@ export default async (data) => {
     }
     return acc;
   }, {});
-  console.log(result)
+  console.log(result);
 };

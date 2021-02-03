@@ -1,42 +1,68 @@
-import React from 'react';
-import { Spinner } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Col } from 'react-bootstrap';
 import actions from '../actions';
+import Select from './Select';
+import SearchInput from './SearchInput';
+import Formula from './Formula';
 
-const Calculate = () => {
-  const generateOnSubmit = () => async (values) => {
-    const { excel } = values;
-    const formdata = new FormData();
-    formdata.append('excel', excel);
-    console.log(formdata);
-    try {
-      await axios.post('/calculate', formdata).then(() => console.log('success'));
-    } catch (e) {
-      throw new Error('Something went wrong');
-    }
-    dispatch(actions.modalStateClose());
+const getAges = (min, max) => Array.from({ length: max - min + 1 }, (_, i) => min + i);
+
+const Search = () => {
+  const {
+    fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, addFilter,
+  } = actions;
+  const { status, diagnos, usl } = useSelector(({ appState }) => appState);
+  const selectRef = useRef(null);
+  const dispatch = useDispatch();
+  const handleAge = () => {
+    dispatch(actions.addAge(selectRef.current.value));
   };
-
-  const form = useFormik({
-    onSubmit: generateOnSubmit(),
-    initialValues: {},
-    validateOnBlur: false,
-  });
-
   return (
-    <form action="/calculate" encType="multipart/form-data" method="post" className="form-inline mb-3" onSubmit={form.handleSubmit}>
-      <div className="input-group flex-row w-100">
-        <input type="file" name="excel" placeholder="file" onChange={({ currentTarget }) => { form.setFieldValue('excel', currentTarget.files[0]); }} className="form-control" />
-        <div className="input-group-prepend">
-          <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
-            {form.isSubmitting ? <Spinner animation="border" /> : 'Добавить файл'}
-          </button>
-        </div>
-      </div>
-    </form>
+    <>
+      <Form>
+        <Form.Row className="align-items-baseline mb-5">
+          <Col xs={4}>
+            {diagnos.type === 'input' ? (
+              <SearchInput
+                stringLength={2}
+                status={status}
+                id="diagnos"
+                value={diagnos.value}
+                addTextValue={addDsValue}
+                fetchData={fetchDataByDS}
+                placeholder="Код Диагноза"
+              />
+            ) : <Select addFilter={addFilter} id="diagnos" />}
+          </Col>
+          <Col xs={4}>
+            {usl.type === 'input' ? (
+              <SearchInput
+                status={status}
+                stringLength={3}
+                id="usl"
+                value={usl.value}
+                addTextValue={addUslValue}
+                fetchData={fetchDataByUsl}
+                placeholder="Код Услуги"
+              />
+            ) : <Select addFilter={addFilter} id="usl" />}
+          </Col>
+          <Col xs={4}>
+            <div className="form-group col-6">
+              <select ref={selectRef} onChange={() => handleAge()} className="form-control" name="age" id="age">
+                <option value="">Возраст</option>
+                {getAges(18, 99).map((item) => (
+                  <option key={`${item}`} value={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+          </Col>
+        </Form.Row>
+      </Form>
+      <Formula />
+    </>
   );
 };
 
-export default Calculate;
+export default Search;

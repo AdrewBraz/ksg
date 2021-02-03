@@ -10,8 +10,6 @@ import '../assets/application.scss';
 import '../assets/add.css';
 import App from './components/App';
 import createRootReducer from './reducers/index';
-import Search from './components/Search';
-import Home from './components/Home';
 
 const history = createBrowserHistory();
 const middleware = [...getDefaultMiddleware(), routerMiddleware(history)];

@@ -83,7 +83,10 @@
   .sidebar-logo {
     padding: 10px 15px 10px 30px;
     font-size: 20px;
-    background-color: #2574A9;
+  }
+
+  .sidebar-logo a{
+    color: #fff
   }
   
   .sidebar-navigation {
@@ -147,5 +150,5 @@
   }
   
   .content-container {
-    padding-left: 220px;
+    padding-left: 250px;
   }

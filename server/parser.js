@@ -29,5 +29,5 @@ export default async (path) => {
     .catch((err) => {
       console.log(err);
     });
-   return data;
+  return data;
 };

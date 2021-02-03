@@ -6,19 +6,19 @@ import actions from '../actions';
 import { changeType, FilterSelector } from '../reducers/appState';
 
 const renderFunctions = {
-  ds: {
+  diagnos: {
     getSuggestions: (list) => sortBy(uniqBy(list, 'MKB_1'), 'MKB_1'),
     getSuggestionsValue: (item) => item.MKB_1,
-    renderSuggestion: (suggestion) => (<span>{`${suggestion.MKB_1} - ${suggestion.MAIN_DS}`}</span>)
+    renderSuggestion: (suggestion) => (<span>{`${suggestion.MKB_1} - ${suggestion.MAIN_DS}`}</span>),
   },
   usl: {
     getSuggestions: (list) => sortBy(uniqBy(list, 'COD_USL'), 'COD_USL'),
     getSuggestionsValue: (item) => item.COD_USL,
-    renderSuggestion: (suggestion) => (<span>{`${suggestion.COD_USL} - ${suggestion.USL_NAME}`}</span>)
-  }
-}
+    renderSuggestion: (suggestion) => (<span>{`${suggestion.COD_USL} - ${suggestion.USL_NAME}`}</span>),
+  },
+};
 
-const usePrevious = value => {
+const usePrevious = (value) => {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -27,26 +27,31 @@ const usePrevious = value => {
 };
 
 const SearchInput = (props) => {
-  const { fetchData, stringLength, id, value, status, addTextValue } = props;
+  const {
+    fetchData, stringLength, id, value, status, addTextValue, placeholder,
+  } = props;
   const inputRef = useRef(null);
   const list = useSelector(FilterSelector);
   const dispatch = useDispatch();
-  const previousState = usePrevious(list)
-  useEffect(() =>{
-    if (previousState && !_.isEqual(previousState, list)) {
-      dispatch(actions.addState(list))
+  const previousState = usePrevious(list);
+  useEffect(() => {
+    if (previousState && !isEqual(previousState, list)) {
+      dispatch(actions.addState(list));
     }
   }, [list]);
   const getData = async (inputValue) => {
     await dispatch(fetchData(inputValue));
   };
-  
-  const { getSuggestions, getSuggestionsValue, renderSuggestion } = renderFunctions[id]
+
+  const { getSuggestions, getSuggestionsValue, renderSuggestion } = renderFunctions[id];
 
   const handleChange = async (e, { newValue }) => {
     if (status === 'selected') {
       dispatch(actions.changeStatus('not selected'));
+      dispatch(actions.addFilter({}))
       dispatch(actions.clearDataList());
+      id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'input' }))
+        : dispatch(actions.changeType({ id: 'diagnos', type: 'input' }));
     }
     await dispatch(addTextValue(newValue));
     if (newValue.length === stringLength) {
@@ -59,33 +64,33 @@ const SearchInput = (props) => {
   };
 
   const handleSelect = async (e, { suggestion }) => {
-    const textValue = id === 'ds' ? suggestion.MKB_1 : suggestion.COD_USL;
+    const textValue = id === 'diagnos' ? suggestion.MKB_1 : suggestion.COD_USL;
     await handleChange(e, { newValue: textValue });
     dispatch(actions.changeStatus('selected'));
-    id === 'ds' ? dispatch(actions.changeType({ id: 'usl', type: 'select'}))
-    : dispatch(actions.changeType({ id: 'ds', type: 'select'}))
+    id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'select' }))
+      : dispatch(actions.changeType({ id: 'diagnos', type: 'select' }));
     inputRef.current.onSuggestionsClearRequested();
   };
 
   const inputProps = {
-    placeholder: 'Введите код диагноза',
+    placeholder,
     value,
     onChange: handleChange,
     onBlur: () => { dispatch(actions.changeStatus('not selected')); },
   };
 
   return (
-          <Autosuggest
-            id={id}
-            ref={inputRef}
-            suggestions={getSuggestions(list)}
-            getSuggestionValue={getSuggestionsValue}
-            onSuggestionsFetchRequested={() => { handleChange; }}
-            onSuggestionsClearRequested={() => { handleClear(); }}
-            onSuggestionSelected={(e, { suggestion }) => { handleSelect(e, { suggestion }); }}
-            renderSuggestion={renderSuggestion}
-            inputProps={inputProps}
-          />
+    <Autosuggest
+      id={id}
+      ref={inputRef}
+      suggestions={getSuggestions(list)}
+      getSuggestionValue={getSuggestionsValue}
+      onSuggestionsFetchRequested={() => { handleChange; }}
+      onSuggestionsClearRequested={() => { handleClear(); }}
+      onSuggestionSelected={(e, { suggestion }) => { handleSelect(e, { suggestion }); }}
+      renderSuggestion={renderSuggestion}
+      inputProps={inputProps}
+    />
   );
 };
 

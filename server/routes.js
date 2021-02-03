@@ -1,9 +1,9 @@
 // @ts-check
 import multer from 'fastify-multer';
-import parser from './parser';
-import { dsController, uslController} from '../controller';
 import path from 'path';
-import fs from 'fs'
+import fs from 'fs';
+import parser from './parser';
+import { dsController, uslController } from '../controller';
 import getVmpData from './getVmpData';
 
 const storage = multer.diskStorage({
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 export default (router) => router
-  .get('/', (req, reply) => {
+  .get('/*', (req, reply) => {
     reply.view('index.pug');
   })
   .get('/search_ds', async (_req, reply) => {
@@ -31,9 +31,9 @@ export default (router) => router
     { preHandler: upload.single('excel') },
     async (_req, reply) => {
       const { path } = _req.file;
-      console.log(path)
+      console.log(path);
       const data = await parser(path);
-      const vmp = getVmpData(data)
+      const vmp = getVmpData(data);
       fs.unlink(_req.file.path, (err) => {
         if (err) throw err;
         console.log(`${path} file was deleted`);
