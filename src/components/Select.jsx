@@ -16,16 +16,16 @@ const Select = (props) => {
   const dispatch = useDispatch();
   const { id, addFilter } = props;
   const { filters, list, age } = useSelector(({ compState }) => compState);
-
-  useEffect(() => {
-    const data = Object.keys(filters).length > 0
+  const data = Object.keys(filters).length > 0
       ? _.filter(list, filters)
       : list;
+  
+  useEffect(() => {
       const kz = data.hasMin('RATIO').RATIO;
       const ks = kz >= 2 ? 1.4 : 0.8;
       const kslp = age > 75 ? 1.1 : 1;
       dispatch(actions.addKSG({ kz, ks, kslp }));
-  }, [list]);
+  }, [data]);
 
   const handleChange = () => {
     id === 'diagnos'
