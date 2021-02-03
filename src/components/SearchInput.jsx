@@ -49,7 +49,6 @@ const SearchInput = (props) => {
     if (status === 'selected') {
       dispatch(actions.changeStatus('not selected'));
       dispatch(actions.addFilter({}))
-      dispatch(actions.clearDataList());
       id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'input' }))
         : dispatch(actions.changeType({ id: 'diagnos', type: 'input' }));
     }

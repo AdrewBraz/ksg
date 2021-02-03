@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
+import _, {isEqual} from 'lodash';
 import actions from '../actions';
 import Select from './Select';
 import SearchInput from './SearchInput';
@@ -8,20 +9,42 @@ import Formula from './Formula';
 
 const getAges = (min, max) => Array.from({ length: max - min + 1 }, (_, i) => min + i);
 
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
 const Search = () => {
   const {
     fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, addFilter,
   } = actions;
   const { status, diagnos, usl } = useSelector(({ appState }) => appState);
+  const { age, filters, list } = useSelector(({ compState }) => compState);
   const { kz, ks } = useSelector(({ ksgState }) => ksgState);
-  const { age } = useSelector(({ compState }) => compState);
   const dispatch = useDispatch();
   const selectRef = useRef(null);
 
+  const data = Object.keys(filters).length > 0
+      ? _.filter(list, filters)
+      : list;
+  const previousState = usePrevious(data)
   useEffect(() => {
     const kslp = age > 75 ? 1.1 : 1;
     dispatch(actions.addKSG({kz, ks, kslp}))
   }, [age])
+
+  useEffect(() => {
+      if (previousState && !isEqual(previousState, data)) {
+        console.log(list)
+        const kz = data.hasMin('RATIO').RATIO;
+        const ks = kz >= 2 ? 1.4 : 0.8;
+        const kslp = age > 75 ? 1.1 : 1;
+        dispatch(actions.addKSG({ kz, ks, kslp }));
+      };
+  }, [data]);
 
   const handleAge = () => {
     dispatch(actions.addAge(selectRef.current.value));

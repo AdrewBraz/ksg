@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import _, {isEqual} from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import actions from '../actions';
 
@@ -7,13 +6,6 @@ Array.prototype.hasMin = function (attrib) {
   return (this.length && this.reduce((prev, curr) => (prev[attrib] < curr[attrib] ? prev : curr))) || null;
 };
 
-const usePrevious = (value) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
 
 const filteredLists = {
   diagnos: (list) => list.map((item) => ({ cod: item.MKB_1, name: `${item.MKB_1}-${item.MAIN_DS}` })),
@@ -25,18 +17,6 @@ const Select = (props) => {
   const dispatch = useDispatch();
   const { id, addFilter } = props;
   const { filters, list, age } = useSelector(({ compState }) => compState);
-  const data = Object.keys(filters).length > 0
-      ? _.filter(list, filters)
-      : list;
-  const previousState = data ? usePrevious(data) : usePrevious(list)
-  useEffect(() => {
-      const kz = data.hasMin('RATIO').RATIO;
-      const ks = kz >= 2 ? 1.4 : 0.8;
-      const kslp = age > 75 ? 1.1 : 1;
-      if (previousState && !isEqual(previousState, data)) {
-        dispatch(actions.addKSG({ kz, ks, kslp }));
-      };
-  }, [data]);
 
   const handleChange = () => {
     id === 'diagnos'
