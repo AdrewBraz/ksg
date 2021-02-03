@@ -28,9 +28,8 @@ const Select = (props) => {
   const data = Object.keys(filters).length > 0
       ? _.filter(list, filters)
       : list;
-  const previousState = usePrevious(data);
+  const previousState = data ? usePrevious(data) : usePrevious(list)
   useEffect(() => {
-    console.log(data, previousState)
       const kz = data.hasMin('RATIO').RATIO;
       const ks = kz >= 2 ? 1.4 : 0.8;
       const kslp = age > 75 ? 1.1 : 1;
