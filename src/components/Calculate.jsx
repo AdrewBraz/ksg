@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import actions from '../actions';
@@ -13,8 +13,16 @@ const Search = () => {
     fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, addFilter,
   } = actions;
   const { status, diagnos, usl } = useSelector(({ appState }) => appState);
-  const selectRef = useRef(null);
+  const { kz, ks } = useSelector(({ ksgState }) => ksgState);
+  const { age } = useSelector(({ compState }) => compState);
   const dispatch = useDispatch();
+  const selectRef = useRef(null);
+
+  useEffect(() => {
+    const kslp = age > 75 ? 1.1 : 1;
+    dispatch(actions.addKSG({kz, ks, kslp}))
+  }, [age])
+
   const handleAge = () => {
     dispatch(actions.addAge(selectRef.current.value));
   };

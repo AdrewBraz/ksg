@@ -53,7 +53,7 @@ const SearchInput = (props) => {
       id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'input' }))
         : dispatch(actions.changeType({ id: 'diagnos', type: 'input' }));
     }
-    await dispatch(addTextValue(newValue));
+    await dispatch(addTextValue(newValue.replace(/а/gi, 'a')));
     if (newValue.length === stringLength) {
       await getData(newValue);
     }
