@@ -1,14 +1,12 @@
 import Excel from 'exceljs';
-
-const getRandomArbitrary = (min, max) => Math.floor((Math.random() * (max - min) + min));
-const vmpCodes = [200409, 200510, 200518, 200519, 200520, 200524, 200522, 200523, 200524, 200525, 200530];
+import interinController from '../controller/interinController';
 
 export default async (path) => {
   const workbook = new Excel.Workbook();
-  console.log(path);
+  const interinCodes = await interinController();
   const data = await workbook.xlsx.readFile(path)
     .then(() => {
-      const worksheet = workbook.getWorksheet('Лист1');
+      const worksheet = workbook.getWorksheet('st');
       const arr = [];
       const keys = [];
       worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
@@ -21,6 +19,8 @@ export default async (path) => {
           row.values.slice(1).forEach((item, i) => {
             obj[keys[i]] = item;
           });
+          const interin = interinCodes.filter(item => item.COD === obj.SRV_CODE);
+          obj.SRV_CODE = interin.length > 0 ? interin[0].COD_USL : null;
           arr.push(obj);
         }
       });
@@ -29,5 +29,6 @@ export default async (path) => {
     .catch((err) => {
       console.log(err);
     });
-  return data;
+
+  return data.filter(item => item.DDS !== 'U07.1' && item.DDS !== 'U07.2')
 };

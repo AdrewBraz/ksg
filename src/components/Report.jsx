@@ -12,7 +12,7 @@ const Calculate = () => {
     formdata.append('excel', excel);
     console.log(formdata);
     try {
-      await axios.post('/calculate', formdata).then(() => console.log('success'));
+      await axios.post('/report', formdata).then(() => console.log('success'));
     } catch (e) {
       throw new Error('Something went wrong');
     }

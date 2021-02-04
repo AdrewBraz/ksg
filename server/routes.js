@@ -5,6 +5,8 @@ import fs from 'fs';
 import parser from './parser';
 import { dsController, uslController } from '../controller';
 import getVmpData from './getVmpData';
+import filterData from './filterData';
+import dataBuilder from './dataBuilder';
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -27,13 +29,14 @@ export default (router) => router
   .get('/search_usl', async (_req, reply) => {
     await uslController(_req, reply);
   })
-  .post('/calculate',
+  .post('/report',
     { preHandler: upload.single('excel') },
     async (_req, reply) => {
       const { path } = _req.file;
-      console.log(path);
       const data = await parser(path);
-      const vmp = getVmpData(data);
+      const {vmpList, ksgList } = filterData(data)
+      // const vmp = getVmpData(vmpList);
+      dataBuilder(ksgList)
       fs.unlink(_req.file.path, (err) => {
         if (err) throw err;
         console.log(`${path} file was deleted`);
