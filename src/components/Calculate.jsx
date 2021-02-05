@@ -38,7 +38,8 @@ const Search = () => {
 
   useEffect(() => {
     if (previousState && !isEqual(previousState, data)) {
-      const kz = list.length > 0 ? data.hasMin('RATIO').RATIO : 1;
+     
+      const kz = data.length > 0 ? data.hasMin('RATIO').RATIO : 1;
       const ks = kz >= 2 ? 1.4 : 0.8;
       const kslp = age > 75 ? 1.1 : 1;
       dispatch(actions.addKSG({ kz, ks, kslp }));
