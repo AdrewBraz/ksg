@@ -4,6 +4,7 @@ import interinController from '../controller/interinController';
 export default async (path) => {
   const workbook = new Excel.Workbook();
   const interinCodes = await interinController();
+  console.log(path)
   const data = await workbook.xlsx.readFile(path)
     .then(() => {
       const worksheet = workbook.getWorksheet('st');
