@@ -23,7 +23,7 @@ const Search = () => {
   } = actions;
   const { status, diagnos, usl } = useSelector(({ appState }) => appState);
   const { age, filters, list } = useSelector(({ compState }) => compState);
-  const { kz, ks } = useSelector(({ ksgState }) => ksgState);
+  const { kz, ks, item } = useSelector(({ ksgState }) => ksgState);
   const dispatch = useDispatch();
   const selectRef = useRef(null);
 
@@ -33,16 +33,17 @@ const Search = () => {
   const previousState = usePrevious(data);
   useEffect(() => {
     const kslp = age > 75 ? 1.1 : 1;
-    dispatch(actions.addKSG({ kz, ks, kslp }));
+    dispatch(actions.addKSG({ kz, ks, kslp, item }));
   }, [age]);
 
   useEffect(() => {
     if (previousState && !isEqual(previousState, data)) {
      
       const kz = data.length > 0 ? data.hasMin('RATIO').RATIO : 1;
+      const item = data.length > 0 ? data.hasMin('RATIO') : {};
       const ks = kz >= 2 ? 1.4 : 0.8;
       const kslp = age > 75 ? 1.1 : 1;
-      dispatch(actions.addKSG({ kz, ks, kslp }));
+      dispatch(actions.addKSG({item, kz, ks, kslp }));
     }
   }, [data]);
 

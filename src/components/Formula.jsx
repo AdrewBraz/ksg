@@ -12,9 +12,8 @@ const Formula = () => {
     currency: 'RUB',
   });
   const {
-    kz, ks, kslp, nfs, kd, kbs,
+    kz, ks, kslp, nfs, kd, kbs, item
   } = useSelector(({ ksgState }) => ksgState);
-  
   return (
     <>
       <div className="input-group flex-row w-100 mb-3">
@@ -43,11 +42,16 @@ const Formula = () => {
           <input style={inputStyle} readOnly id="kslp" name="kslp" type="text" value={kslp} />
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-5">
+      <div className="d-flex flex-column align-items-center justify-content-center mt-5">
         <h1 className="mt-5">
           Сумма по КСГ -
           {formatter.format(kz * ks * kslp * nfs * kd * kbs)}
         </h1>
+        {Object.keys(item).length > 0 ? <h2 className="mt-5">
+          {item.KSG}
+          -
+          {item.KSG_NAME}
+        </h2> : null}
       </div>
     </>
   );
