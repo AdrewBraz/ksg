@@ -16,7 +16,6 @@ const Calculate = () => {
     } catch (e) {
       throw new Error('Something went wrong');
     }
-    dispatch(actions.modalStateClose());
   };
 
   const form = useFormik({
