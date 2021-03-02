@@ -19,10 +19,17 @@ const App = () => (
       </div>
       <ul className="sidebar-navigation">
         <li>
-          <Link to="/calculate">
+          <Link to="/ks">
             <FontAwesomeIcon icon={faCalculator} />
             {' '}
-            Расчет КСГ
+            Расчет КСГ для КС
+          </Link>
+        </li>
+        <li>
+          <Link to="/ds">
+            <FontAwesomeIcon icon={faCalculator} />
+            {' '}
+            Расчет КСГ для ДС
           </Link>
         </li>
         <li>
@@ -40,7 +47,8 @@ const App = () => (
       <div className="container-fluid" />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/calculate" component={Calculate} />
+        <Route exact path="/ks" component={Calculate} />
+        <Route exact path="/ds" component={Calculate} />
         <Route exact path="/report" component={Report} />
       </Switch>
     </div>

@@ -28,7 +28,7 @@ const usePrevious = (value) => {
 
 const SearchInput = (props) => {
   const {
-    fetchData, stringLength, id, value, status, addTextValue, placeholder,
+    fetchData, stringLength, pathname, id, value, status, addTextValue, placeholder,
   } = props;
   const inputRef = useRef(null);
   const list = useSelector(FilterSelector);
@@ -40,7 +40,7 @@ const SearchInput = (props) => {
     }
   }, [list]);
   const getData = async (inputValue) => {
-    await dispatch(fetchData(inputValue));
+    await dispatch(fetchData({ value: inputValue, pathname}));
   };
 
   const { getSuggestions, getSuggestionsValue, renderSuggestion } = renderFunctions[id];

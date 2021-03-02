@@ -9,9 +9,9 @@ const ksgSlice = createSlice({
   initialState,
   reducers: {
     addKSG(state, { payload }) {
-      const { kz, ks, kslp, item } = payload;
+      const { kz, ks, kslp, item, nfs, kbs } = payload;
       state = {
-        ...state, kz, ks, kslp, item
+        ...state, kz, ks, kslp, item, nfs, kbs
       };
       return state;
     },

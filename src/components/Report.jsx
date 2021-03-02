@@ -2,7 +2,6 @@ import React from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 import actions from '../actions';
 
 const Calculate = () => {

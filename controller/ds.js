@@ -1,11 +1,11 @@
-import model from '../model';
+import model from '../model/ds';
 
 const dsController = async (ds, reply) => {
   const coll = await model.aggregate([
-    { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' }, GROUP_NUM: { $in: [27, 76, 77, 78, 79, 80, 81, 82, 83, 84,229, 230,231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257] } } },
+    { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' }, GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } },
     {
       $lookup: {
-        from: 'ksg_ratio',
+        from: 'ksgDs_ratio',
         localField: 'KSG',
         foreignField: 'KSG',
         as: 'ratio',
@@ -28,7 +28,8 @@ const dsController = async (ds, reply) => {
   reply.send(coll);
 };
 
-const uslController = async (usl, reply) => {
+const uslController = async (_req, reply) => {
+  const { usl } = _req.query;
   const patternMatch = usl.match(/(A\d{2}(\.)?[0-9\.]*)/gi)
   let regexObj;
   if(patternMatch){
@@ -38,10 +39,10 @@ const uslController = async (usl, reply) => {
     regexObj = { USL_NAME: { $regex: `$${usl}`, $options: 'ig' }}
   }
   const coll = await model.aggregate([
-    { $match: { ...regexObj, GROUP_NUM: { $in: [27, 76, 77, 78, 79, 80, 81, 82, 83, 84,229,230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257] } } },
+    { $match: { ...regexObj, GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } },
     {
       $lookup: {
-        from: 'ksg_ratio',
+        from: 'ksgDs_ratio',
         localField: 'KSG',
         foreignField: 'KSG',
         as: 'ratio',
@@ -68,11 +69,11 @@ const listDsController = async (list) => {
   const coll = await model.aggregate([
     { $match: { 
         MKB_1: { $in: list },
-        GROUP_NUM: { $in: [27, 76, 77, 78, 79, 80, 81, 82, 83, 84, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257] } } 
+        GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } 
     },
     {
       $lookup: {
-        from: 'ksg_ratio',
+        from: 'ksgDs_ratio',
         localField: 'KSG',
         foreignField: 'KSG',
         as: 'ratio',
@@ -100,11 +101,11 @@ const listUslController = async (list) => {
   const coll = await model.aggregate([
     { $match: { 
         COD_USL: { $in: list },
-        GROUP_NUM: { $in: [27, 76, 77, 78, 79, 80, 81, 82, 83, 84,229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257] } } 
+        GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } 
     },
     {
       $lookup: {
-        from: 'ksg_ratio',
+        from: 'ksgDs_ratio',
         localField: 'KSG',
         foreignField: 'KSG',
         as: 'ratio',

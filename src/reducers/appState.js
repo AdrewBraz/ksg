@@ -4,8 +4,9 @@ import { LOCATION_CHANGE } from 'connected-react-router';
 
 const fetchDataByDS = createAsyncThunk(
   'ksg/fetchDataByDS',
-  async (value) => {
-    const result = await axios(`/search_ds?ds=${value}`)
+  async (obj) => {
+    const { value, pathname } = obj;
+    const result = await axios(`${pathname}_search?ds=${value}`)
       .then(({ data }) => data)
       .catch(() => console.log('fail'));
     return result;
@@ -14,8 +15,9 @@ const fetchDataByDS = createAsyncThunk(
 
 const fetchDataByUsl = createAsyncThunk(
   'ksg/fetchDataByDS',
-  async (value) => {
-    const result = await axios(`/search_usl?usl=${value}`)
+  async (obj) => {
+    const { value, pathname } = obj;
+    const result = await axios(`${pathname}_search?usl=${value}`)
       .then(({ data }) => data)
       .catch(() => console.log('fail'));
     return result;

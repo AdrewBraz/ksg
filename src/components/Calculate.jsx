@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import _, { isEqual } from 'lodash';
+import { useLocation } from 'react-router-dom';
 import actions from '../actions';
 import Select from './Select';
 import SearchInput from './SearchInput';
@@ -23,27 +24,52 @@ const Search = () => {
   } = actions;
   const { status, diagnos, usl } = useSelector(({ appState }) => appState);
   const { age, filters, list } = useSelector(({ compState }) => compState);
-  const { kz, ks, item } = useSelector(({ ksgState }) => ksgState);
+  const {
+    kz, ks, item, nfs, kbs,
+  } = useSelector(({ ksgState }) => ksgState);
   const dispatch = useDispatch();
   const selectRef = useRef(null);
+  const { pathname } = useLocation();
 
   const data = Object.keys(filters).length > 0
     ? _.filter(list, filters)
     : list;
   const previousState = usePrevious(data);
+
+  useEffect(() => {
+    console.log(pathname)
+    const kslp = 1;
+    if (pathname === '/ds') {
+      const nfs = 25617.3;
+      const kbs = 0.52;
+      dispatch(actions.addKSG({
+        kz, ks, kslp, nfs, kbs, item,
+      }));
+    } else {
+      const nfs = 56680.9;
+      const kbs = 0.41;
+    dispatch(actions.addKSG({
+      kz, ks, kslp, nfs, kbs, item,
+    }));
+  }
+  }, [pathname]);
+
   useEffect(() => {
     const kslp = age > 75 ? 1.1 : 1;
-    dispatch(actions.addKSG({ kz, ks, kslp, item }));
+    dispatch(actions.addKSG({
+      kz, ks, kslp, nfs, kbs, item,
+    }));
   }, [age]);
 
   useEffect(() => {
     if (previousState && !isEqual(previousState, data)) {
-     
       const kz = data.length > 0 ? data.hasMin('RATIO').RATIO : 1;
       const item = data.length > 0 ? data.hasMin('RATIO') : {};
       const ks = kz >= 2 ? 1.4 : 0.8;
       const kslp = age > 75 ? 1.1 : 1;
-      dispatch(actions.addKSG({item, kz, ks, kslp }));
+      dispatch(actions.addKSG({
+        item, kz, ks, kslp, nfs, kbs
+      }));
     }
   }, [data]);
 
@@ -60,6 +86,7 @@ const Search = () => {
                 stringLength={2}
                 status={status}
                 id="diagnos"
+                pathname={pathname}
                 value={diagnos.value}
                 addTextValue={addDsValue}
                 fetchData={fetchDataByDS}
@@ -73,6 +100,7 @@ const Search = () => {
                 status={status}
                 stringLength={3}
                 id="usl"
+                pathname={pathname}
                 value={usl.value}
                 addTextValue={addUslValue}
                 fetchData={fetchDataByUsl}

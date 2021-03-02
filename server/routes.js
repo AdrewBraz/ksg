@@ -3,7 +3,8 @@ import multer from 'fastify-multer';
 import path from 'path';
 import fs from 'fs';
 import parser from './parser';
-import { dsController, uslController } from '../controller';
+import { dsController, uslController } from '../controller/ds';
+import { dsController as ksController, uslController as ksUslController } from '../controller';
 import getVmpData from './getVmpData';
 import filterData from './filterData';
 import dataBuilder from './dataBuilder';
@@ -24,11 +25,24 @@ export default (router) => router
   .get('/*', (req, reply) => {
     reply.view('index.pug');
   })
-  .get('/search_ds', async (_req, reply) => {
-    await dsController(_req, reply);
+  .get('/ds_search', async (_req, reply) => {
+    const { ds, usl } = _req.query
+    if(!!ds){
+      await dsController(ds, reply)
+    }
+    if(!!usl){
+      await uslController(usl, reply)
+    }
   })
-  .get('/search_usl', async (_req, reply) => {
-    await uslController(_req, reply);
+  .get('/ks_search', async (_req, reply) => {
+    console.log()
+    const { ds, usl } = _req.query
+    if(!!ds){
+      await ksController(ds, reply)
+    }
+    if(!!usl){
+      await ksUslController(usl, reply)
+    }
   })
   .post('/report',
     { preHandler: upload.single('excel') },
