@@ -14,8 +14,9 @@ const fetchDataByDS = createAsyncThunk(
 );
 
 const fetchDataByUsl = createAsyncThunk(
-  'ksg/fetchDataByDS',
+  'ksg/fetchDataByUsl',
   async (obj) => {
+    console.log(obj)
     const { value, pathname } = obj;
     const result = await axios(`${pathname}_search?usl=${value}`)
       .then(({ data }) => data)

@@ -9,14 +9,16 @@ const sheetBuilder = async (vmp, ksg, workbook) => {
     NAME: 'Наименование',
     GROUP: 'Группа',
     PRICE: 'Стоимость одной услуги',
-    count: 'Количество услуг за период',
-    TOTAL: 'Итоговая сумма',
+    FIO: 'ФИО',
+    DDS: 'Диагноз',
+    AGE: 'Возраст',
   };
   const translateKsgKeys = {
     FIO: 'ФИО',
     DDS: 'Диагноз',
     AGE: 'Возраст',
     FINAL_CODE: 'Код Прерывания',
+    COD: 'Услуга',
     kz: 'Коэффицент затратности',
     ksgName: 'Название КСГ',
     ksg: 'Код КСГ',

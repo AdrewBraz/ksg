@@ -54,6 +54,7 @@ const SearchInput = (props) => {
     }
     await dispatch(addTextValue(newValue.replace(/а/gi, 'a')));
     if (newValue.length === stringLength) {
+      console.log(newValue)
       await getData(newValue);
     }
   };

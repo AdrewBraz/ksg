@@ -8,21 +8,17 @@ const formatter = new Intl.NumberFormat('ru-RU', {
 export default async (data) => {
   const vmpData = await vmpController();
   const result = data.reduce((acc, item) => {
-    if (acc.hasOwnProperty(item.COD)) {
-      acc[item.COD].count = acc[item.COD].count + 1;
-      acc[item.COD].TOTAL = acc[item.COD].PRICE * acc[item.COD].count.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
-    } else {
+    const { C_I, FIO, DDS, AGE } = item;
       const obj = vmpData.find((el) => el.ID === (item.COD).toString());
       const { GROUP, PRICE, NAME } = obj;
-      acc[item.COD] = {
+      acc[C_I] = {
+        FIO,
+        DDS,
+        AGE,
         NAME,
         GROUP,
-        PRICE,
-        count: 1,
+        PRICE
       };
-      acc[item.COD].TOTAL = acc[item.COD].PRICE.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
-    }
-
     return acc;
   }, {});
   return result;

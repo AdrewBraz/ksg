@@ -47,11 +47,11 @@ const Formula = () => {
           Сумма по КСГ -
           {formatter.format(kz * ks * kslp * nfs * kd * kbs)}
         </h1>
-        {Object.keys(item).length > 0 ? <h2 className="mt-5">
+        {Object.keys(item).length > 0 ? <><h2 className="mt-5">
           {item.KSG}
           -
           {item.KSG_NAME}
-        </h2> : null}
+        </h2><h2>Группа заболевания {item.GROUP_NUM}</h2></> : null}
       </div>
     </>
   );

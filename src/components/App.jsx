@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExcel, faCalculator, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faFileExcel, faHospital, faClinicMedical, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import Home from './Home';
@@ -20,14 +20,14 @@ const App = () => (
       <ul className="sidebar-navigation">
         <li>
           <Link to="/ks">
-            <FontAwesomeIcon icon={faCalculator} />
+            <FontAwesomeIcon icon={faHospital} />
             {' '}
             Расчет КСГ для КС
           </Link>
         </li>
         <li>
           <Link to="/ds">
-            <FontAwesomeIcon icon={faCalculator} />
+            <FontAwesomeIcon icon={faClinicMedical} />
             {' '}
             Расчет КСГ для ДС
           </Link>

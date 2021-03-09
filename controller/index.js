@@ -21,7 +21,7 @@ const dsController = async (ds, reply) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -57,7 +57,7 @@ const uslController = async (usl, reply) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -88,7 +88,7 @@ const listDsController = async (list) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -120,7 +120,7 @@ const listUslController = async (list) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);

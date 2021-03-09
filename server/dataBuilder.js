@@ -67,7 +67,7 @@ export default async (data) => {
       }
     } else {
       acc[C_I] = {
-        FIO, DDS, AGE, FINAL_CODE, kz: ratio, ksgName, ksg, total: calculateKsg(ratio, AGE, FINAL_CODE),
+        FIO, DDS, AGE, FINAL_CODE, COD: cod, kz: ratio, ksgName, ksg, total: calculateKsg(ratio, AGE, FINAL_CODE),
       };
     }
     return acc;

@@ -26,7 +26,9 @@ export default (router) => router
     reply.view('index.pug');
   })
   .get('/ds_search', async (_req, reply) => {
-    const { ds, usl } = _req.query
+    const query = JSON.parse(JSON.stringify(_req.query))
+    const { ds, usl } = query;
+    console.log(query)
     if(!!ds){
       await dsController(ds, reply)
     }
@@ -35,7 +37,6 @@ export default (router) => router
     }
   })
   .get('/ks_search', async (_req, reply) => {
-    console.log()
     const { ds, usl } = _req.query
     if(!!ds){
       await ksController(ds, reply)

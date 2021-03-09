@@ -28,8 +28,7 @@ const dsController = async (ds, reply) => {
   reply.send(coll);
 };
 
-const uslController = async (_req, reply) => {
-  const { usl } = _req.query;
+const uslController = async (usl, reply) => {
   const patternMatch = usl.match(/(A\d{2}(\.)?[0-9\.]*)/gi)
   let regexObj;
   if(patternMatch){
