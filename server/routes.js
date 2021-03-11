@@ -9,6 +9,7 @@ import getVmpData from './getVmpData';
 import filterData from './filterData';
 import dataBuilder from './dataBuilder';
 import excel from './excel'
+import { get } from 'lodash';
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -45,6 +46,15 @@ export default (router) => router
       await ksUslController(usl, reply)
     }
   })
+  .get('/download', (_req, reply) => {
+    const file = fs.readFileSync(`${__dirname}/export.xlsx`);
+      const stat = fs.statSync(`${__dirname}/export.xlsx`);
+      reply.header('Content-Length', stat.size);
+      reply.header('Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      reply.header('Content-Disposition', 'attachment; filename=export.xlsx');
+      reply.send(file)
+  })
   .post('/report',
     { preHandler: upload.single('excel') },
     async (_req, reply) => {
@@ -58,11 +68,5 @@ export default (router) => router
         console.log(`${path} file was deleted`);
       });
       await excel(vmp, ksg)
-      const file = fs.readFileSync(`${__dirname}/export.xlsx`);
-      const stat = fs.statSync(`${__dirname}/export.xlsx`);
-      reply.header('Content-Length', stat.size);
-      reply.header('Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      reply.header('Content-Disposition', 'attachment; filename=export.xlsx');
-      reply.send(file)
+      reply.send('success')
     });

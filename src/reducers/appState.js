@@ -28,7 +28,7 @@ const fetchDataByUsl = createAsyncThunk(
 const storeSlice = createSlice({
   name: 'ksg',
   initialState: {
-    list: [], diagnos: { type: 'input', value: '' }, usl: { type: 'input', value: '' }, status: 'empty',
+    list: [], url: '', diagnos: { type: 'input', value: '' }, usl: { type: 'input', value: '' }, status: 'empty',
   },
   reducers: {
     addDsValue(state, { payload }) {
@@ -37,6 +37,10 @@ const storeSlice = createSlice({
     },
     addUslValue(state, { payload }) {
       state.usl.value = payload;
+      return state;
+    },
+    addUrl(state, { payload }) {
+      state.url = payload;
       return state;
     },
     changeType(state, { payload }) {
@@ -81,7 +85,7 @@ export const FilterSelector = createSelector([getList, getFilters],
   });
 
 export const {
-  addDsValue, addUslValue, changeStatus, changeType,
+  addDsValue, addUslValue, changeStatus, changeType, addUrl
 } = storeSlice.actions;
 export { fetchDataByDS, fetchDataByUsl };
 

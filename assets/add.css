@@ -4,7 +4,7 @@
   }
   
   .react-autosuggest__input {
-    width: 50vh;
+    width: 25vh;
     height: 30px;
     padding: 10px 20px;
     font-family: Helvetica, sans-serif;
@@ -151,4 +151,9 @@
   
   .content-container {
     padding-left: 250px;
+  }
+
+  .excel{
+    width: 10vw;
+    height: 10hw;
   }

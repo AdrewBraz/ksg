@@ -33,20 +33,22 @@ export default async (data) => {
     const ratio = item.RATIO;
     const ksg = item.KSG;
     const ksgName = item.KSG_NAME;
-    return { ratio, ksg, ksgName };
+    const group = item.GROUP_NUM;
+    return { ratio, ksg, ksgName, group };
   };
   const getRatioByDs = (dds, list, cod = '') => {
     const item = find(list, { MKB_1: dds, COD_USL: cod });
     let ratio;
     if (item === undefined) {
-      const { ratio, ksg, ksgName } = getRatioByUsl(cod, usl);
-      return { ratio, ksg, ksgName };
+      const { ratio, ksg, ksgName, group } = getRatioByUsl(cod, usl);
+      return { ratio, ksg, ksgName, group };
     }
     if (item) {
       ratio = item.RATIO;
       const ksg = item.KSG;
       const ksgName = item.KSG_NAME;
-      return { ratio, ksg, ksgName };
+      const group = item.GROUP_NUM
+      return { ratio, ksg, ksgName, group };
     }
   };
   const result = data.reduce((acc, item) => {
@@ -54,20 +56,22 @@ export default async (data) => {
       C_I, DDS, FIO, AGE, FINAL_CODE,
     } = item;
     const cod = item.SRV_CODE ? item.SRV_CODE : '';
-    const { ratio, ksg, ksgName } = getRatioByDs(DDS, ds, cod);
+    const { ratio, ksg, ksgName, group } = getRatioByDs(DDS, ds, cod);
     if (acc[C_I]) {
       const { kz } = acc[C_I];
       if (kz >= ratio) {
         acc[C_I].kz = kz;
       } else {
         acc[C_I].kz = ratio;
+        acc[C_I].COD = cod;
         acc[C_I].ksg = ksg;
         acc[C_I].ksgName = ksgName;
+        acc[C_I].group = group;
         acc[C_I].total = calculateKsg(ratio, AGE, FINAL_CODE);
       }
     } else {
       acc[C_I] = {
-        FIO, DDS, AGE, FINAL_CODE, COD: cod, kz: ratio, ksgName, ksg, total: calculateKsg(ratio, AGE, FINAL_CODE),
+        FIO, DDS, C_I, group, AGE, FINAL_CODE, COD: cod, kz: ratio, ksgName, ksg, total: calculateKsg(ratio, AGE, FINAL_CODE),
       };
     }
     return acc;

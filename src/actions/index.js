@@ -1,8 +1,8 @@
 import {
-  fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, changeStatus, changeType,
+  fetchDataByDS, fetchDataByUsl, addDsValue, addUslValue, changeStatus, changeType, addUrl
 } from '../reducers/appState';
 import {
-  addState, clearDataList, addFilter, addAge,
+  addState, clearDataList, addFilter, addAge, addSeverity
 } from '../reducers/compState';
 import { addKSG } from '../reducers/ksgState';
 
@@ -18,4 +18,6 @@ export default {
   changeType,
   addAge,
   addKSG,
+  addSeverity,
+  addUrl
 };

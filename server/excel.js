@@ -16,6 +16,8 @@ const sheetBuilder = async (vmp, ksg, workbook) => {
   const translateKsgKeys = {
     FIO: 'ФИО',
     DDS: 'Диагноз',
+    C_I: 'ИБ',
+    group: 'Группа',
     AGE: 'Возраст',
     FINAL_CODE: 'Код Прерывания',
     COD: 'Услуга',
