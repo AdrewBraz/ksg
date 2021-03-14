@@ -9,7 +9,6 @@ import getVmpData from './getVmpData';
 import filterData from './filterData';
 import dataBuilder from './dataBuilder';
 import excel from './excel'
-import { get } from 'lodash';
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -60,7 +59,7 @@ export default (router) => router
     async (_req, reply) => {
       const { path } = _req.file;
       const data = await parser(path);
-      const {vmpList, ksgList } = filterData(data)
+      const {vmpList, ksgList } = await filterData(data)
       const vmp = await getVmpData(vmpList);
       const ksg = await dataBuilder(ksgList);
       fs.unlink(_req.file.path, (err) => {

@@ -11,7 +11,10 @@ const sheetBuilder = async (vmp, ksg, workbook) => {
     PRICE: 'Стоимость одной услуги',
     FIO: 'ФИО',
     DDS: 'Диагноз',
+    C_I: 'ИБ',
     AGE: 'Возраст',
+    out_date: 'Дата выписки',
+    C_T: 'Страховая принадлежность',
   };
   const translateKsgKeys = {
     FIO: 'ФИО',
@@ -24,23 +27,32 @@ const sheetBuilder = async (vmp, ksg, workbook) => {
     kz: 'Коэффицент затратности',
     ksgName: 'Название КСГ',
     ksg: 'Код КСГ',
+    PATOLOGY: 'Тяжелое сопутствующее заболевание',
     total: 'Cумма',
+    out_date: 'Дата выписки',
+    C_T: 'Страховая принадлежность',
   };
-  const vmpColumns = vmpKeys.map((key) => ({ name: translateVmpKeys[key], filterButton: true }));
+  const vmpColumns = vmpKeys.map((key) => {
+    if (key === 'out_date') {
+      return { name: translateVmpKeys[key], filterButton: true, style: { numFmt: 'dd.mm.yy' } };
+    }
+    return { name: translateVmpKeys[key], filterButton: true };
+  });
+
   const ksgColumns = ksgKeys.map((key) => ({ name: translateKsgKeys[key], filterButton: true }));
   const ksgRows = Object.keys(ksg).reduce((acc, item) => {
-    const values =  Object.values(ksg[item]);
+    const values = Object.values(ksg[item]);
     acc.push(values);
-    return acc
-}, [])
-const vmpRows = Object.keys(vmp).reduce((acc, item) => {
-    const values =  Object.values(vmp[item]);
+    return acc;
+  }, []);
+  const vmpRows = Object.keys(vmp).reduce((acc, item) => {
+    const values = Object.values(vmp[item]);
     acc.push(values);
-    return acc
-}, [])
-  const worksheet = workbook.addWorksheet('КСГ');
+    return acc;
+  }, []);
+  const worksheet = workbook.addWorksheet('ВМП');
   worksheet.headerFooter.differentFirst = true;
-  worksheet.headerFooter.firstHeader = 'КСГ';
+  worksheet.headerFooter.firstHeader = 'VMP';
   worksheet.addTable({
     name: 'MyTable',
     ref: 'A1',
@@ -51,11 +63,15 @@ const vmpRows = Object.keys(vmp).reduce((acc, item) => {
     rows: vmpRows,
   });
 
-  worksheet.addTable({
-    name: 'MyTable4',
-    ref: 'K1',
+  const worksheetKsg = workbook.addWorksheet('КСГ');
+  worksheetKsg.headerFooter.differentFirst = true;
+  worksheetKsg.headerFooter.firstHeader = 'КСГ';
+  worksheetKsg.addTable({
+    name: 'MyTable2',
+    ref: 'A1',
     headerRow: true,
     totalsRow: true,
+    displayName: 'medgroup',
     columns: ksgColumns,
     rows: ksgRows,
   });
