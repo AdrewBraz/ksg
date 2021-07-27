@@ -1,6 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExcel, faHospital, faClinicMedical, faHome } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFileExcel, faHospital, faClinicMedical, faHome,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import Home from './Home';

@@ -3,7 +3,9 @@ import { LOCATION_CHANGE } from 'connected-react-router';
 
 const componentSlice = createSlice({
   name: 'component',
-  initialState: { list: [], filters: {}, age: 50, severity: '' },
+  initialState: {
+    list: [], filters: {}, age: 50, severity: '',
+  },
   reducers: {
     addState(state, { payload }) {
       state.list = payload;
@@ -38,7 +40,7 @@ export const CompSelector = createSelector([getList, getValue], (list, value) =>
 });
 
 export const {
-  addFilter, addAge, addState, clearDataList, addSeverity
+  addFilter, addAge, addState, clearDataList, addSeverity,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;

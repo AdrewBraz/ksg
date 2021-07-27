@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const Formula = () => {
@@ -12,7 +12,7 @@ const Formula = () => {
     currency: 'RUB',
   });
   const {
-    kz, ks, kslp, nfs, kd, kbs, item
+    kz, ks, kslp, nfs, kd, kbs, item,
   } = useSelector(({ ksgState }) => ksgState);
   return (
     <>
@@ -47,11 +47,19 @@ const Formula = () => {
           Сумма по КСГ -
           {formatter.format(kz * ks * kslp * nfs * kd * kbs)}
         </h1>
-        {Object.keys(item).length > 0 ? <><h2 className="mt-5">
-          {item.KSG}
-          -
-          {item.KSG_NAME}
-        </h2><h2>Группа заболевания {item.GROUP_NUM}</h2></> : null}
+        {Object.keys(item).length > 0 ? (
+          <>
+            <h2 className="mt-5">
+              {item.KSG}
+              -
+              {item.KSG_NAME}
+            </h2>
+            <h2>
+              Группа заболевания
+              {item.GROUP_NUM}
+            </h2>
+          </>
+        ) : null}
       </div>
     </>
   );

@@ -16,7 +16,7 @@ const fetchDataByDS = createAsyncThunk(
 const fetchDataByUsl = createAsyncThunk(
   'ksg/fetchDataByUsl',
   async (obj) => {
-    console.log(obj)
+    console.log(obj);
     const { value, pathname } = obj;
     const result = await axios(`${pathname}_search?usl=${value}`)
       .then(({ data }) => data)
@@ -67,8 +67,8 @@ const storeSlice = createSlice({
       state.diagnos.value = '';
       state.usl.value = '';
       state.status = 'empty';
-      state.diagnos.type = 'input'
-      state.usl.type = 'input'
+      state.diagnos.type = 'input';
+      state.usl.type = 'input';
     },
   },
 });
@@ -85,7 +85,7 @@ export const FilterSelector = createSelector([getList, getFilters],
   });
 
 export const {
-  addDsValue, addUslValue, changeStatus, changeType, addUrl
+  addDsValue, addUslValue, changeStatus, changeType, addUrl,
 } = storeSlice.actions;
 export { fetchDataByDS, fetchDataByUsl };
 

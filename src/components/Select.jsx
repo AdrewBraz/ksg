@@ -6,7 +6,6 @@ Array.prototype.hasMin = function (attrib) {
   return (this.length && this.reduce((prev, curr) => (prev[attrib] < curr[attrib] ? prev : curr))) || null;
 };
 
-
 const filteredLists = {
   diagnos: (list) => list.map((item) => ({ cod: item.MKB_1, name: `${item.MKB_1}-${item.MAIN_DS}` })),
   usl: (list) => list.map((item) => ({ cod: item.COD_USL, name: `${item.COD_USL}-${item.USL_NAME}` })),

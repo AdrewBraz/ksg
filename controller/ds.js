@@ -2,7 +2,7 @@ import model from '../model/ds';
 
 const dsController = async (ds, reply) => {
   const coll = await model.aggregate([
-    { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' }, GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } },
+    { $match: { MKB_1: { $regex: `^${ds}`, $options: 'i' }, GROUP_NUM: { $in: [34, 35, 36, 113, 114, 115, 117, 154] } } },
     {
       $lookup: {
         from: 'ksgDs_ratio',
@@ -21,7 +21,7 @@ const dsController = async (ds, reply) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -29,16 +29,16 @@ const dsController = async (ds, reply) => {
 };
 
 const uslController = async (usl, reply) => {
-  const patternMatch = usl.match(/(A\d{2}(\.)?[0-9\.]*)/gi)
+  const patternMatch = usl.match(/(A\d{2}(\.)?[0-9\.]*)/gi);
   let regexObj;
-  if(patternMatch){
-    regexObj = { COD_USL: { $regex: `^${usl}`, $options: 'i' }}
+  if (patternMatch) {
+    regexObj = { COD_USL: { $regex: `^${usl}`, $options: 'i' } };
   } else {
-    const regex = new RegExp(/\b[А-Яа-я]?/)
-    regexObj = { USL_NAME: { $regex: `$${usl}`, $options: 'ig' }}
+    const regex = new RegExp(/\b[А-Яа-я]?/);
+    regexObj = { USL_NAME: { $regex: `$${usl}`, $options: 'ig' } };
   }
   const coll = await model.aggregate([
-    { $match: { ...regexObj, GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } },
+    { $match: { ...regexObj, GROUP_NUM: { $in: [34, 35, 36, 113, 114, 115, 117, 154] } } },
     {
       $lookup: {
         from: 'ksgDs_ratio',
@@ -57,7 +57,7 @@ const uslController = async (usl, reply) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -66,9 +66,11 @@ const uslController = async (usl, reply) => {
 
 const listDsController = async (list) => {
   const coll = await model.aggregate([
-    { $match: { 
+    {
+      $match: {
         MKB_1: { $in: list },
-        GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } 
+        GROUP_NUM: { $in: [34, 35, 36, 113, 114, 115, 117, 154] },
+      },
     },
     {
       $lookup: {
@@ -88,7 +90,7 @@ const listDsController = async (list) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
@@ -96,11 +98,12 @@ const listDsController = async (list) => {
 };
 
 const listUslController = async (list) => {
-  console.log(list)
   const coll = await model.aggregate([
-    { $match: { 
+    {
+      $match: {
         COD_USL: { $in: list },
-        GROUP_NUM: { $in: [34,35,36, 113, 114, 115, 117] } } 
+        GROUP_NUM: { $in: [34, 35, 36, 113, 114, 115, 117, 154] },
+      },
     },
     {
       $lookup: {
@@ -120,11 +123,18 @@ const listUslController = async (list) => {
     },
     {
       $project: {
-        _id: 0, GROUP_NUM: 0, __v: 0, ratio: 0,
+        _id: 0, __v: 0, ratio: 0,
       },
     },
   ]);
   return coll;
 };
 
-export { dsController, uslController, listDsController, listUslController };
+const allUsl = async () => {
+  const coll = await model.find({ GROUP_NUM: { $in: [34, 35, 36, 113, 114, 115, 117, 154] } }).distinct('COD_USL');
+  return coll.filter((item) => !!item);
+};
+
+export {
+  dsController, uslController, listDsController, listUslController, allUsl,
+};

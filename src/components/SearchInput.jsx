@@ -40,7 +40,7 @@ const SearchInput = (props) => {
     }
   }, [list]);
   const getData = async (inputValue) => {
-    await dispatch(fetchData({ value: inputValue, pathname}));
+    await dispatch(fetchData({ value: inputValue, pathname }));
   };
 
   const { getSuggestions, getSuggestionsValue, renderSuggestion } = renderFunctions[id];
@@ -48,13 +48,13 @@ const SearchInput = (props) => {
   const handleChange = async (e, { newValue }) => {
     if (status === 'selected') {
       dispatch(actions.changeStatus('not selected'));
-      dispatch(actions.addFilter({}))
+      dispatch(actions.addFilter({}));
       id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'input' }))
         : dispatch(actions.changeType({ id: 'diagnos', type: 'input' }));
     }
     await dispatch(addTextValue(newValue.replace(/а/gi, 'a')));
     if (newValue.length === stringLength) {
-      console.log(newValue)
+      console.log(newValue);
       await getData(newValue);
     }
   };
