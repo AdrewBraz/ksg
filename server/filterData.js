@@ -29,6 +29,9 @@ export default async (data, kslp) => {
     } else {
       item.PATOLOGY = '';
     }
+    if(item.DDS === 'I10.0'){
+      item.DDS = 'I10'
+    }
     if (parseInt(item.C_I.slice(5)) >= 30000) {
       if (dayServList.includes(item.SRV_CODE)) {
         item.USL_OK = 2;
@@ -51,6 +54,6 @@ export default async (data, kslp) => {
     item.USL_OK = 1;
     item.C_T = item.C_T === '77' ? 'Москва' : 'Иногород';
     return item;
-  }).filter((item) => item.DDS !== 'U07.1' && item.DDS !== 'U07.2' && item.DDS !== 'G90.9');
+  }).filter((item) => item.DDS !== 'U07.1' && item.DDS !== 'U07.2');
   return { vmp, ksg };
 };

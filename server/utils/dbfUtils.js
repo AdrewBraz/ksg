@@ -31,6 +31,12 @@ const replaceDoc = (cod) => {
       return '32042';
     case '36445':
       return '32042';
+    case '36467':
+      return '21681';
+    case '28918':
+      return '34322';
+    case '18463':
+      return '34322';
     case null:
       return '22023';
     default:

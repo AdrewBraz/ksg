@@ -21,5 +21,5 @@ const KsgSchema = new Schema({
   KSG_NAME: String,
   GROUP_NUM: Number,
 });
-
+KsgSchema.index({MKB_1:{type: [String], text: true}})
 export default mongoose.model('KSG', KsgSchema, 'ksg');

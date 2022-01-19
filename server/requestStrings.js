@@ -1,7 +1,7 @@
 export const kslpStr = 'select concat(\'2021_\', T_CODE) C_I, KIND1 DS from Z.ZI_DIAG_IB_LIST_ALL where kind like \'клинический заключительный (эпикриз)\'';
 
 const excel = `select 
-oms.fio, oms.patient, oms.c_i, oms.cod, oms.dds, oms.dr, oms.w, oms.s_pol, oms.sn_pol, oms.in_date, oms.out_date, oms.org, oms.org_code, oms.final_code, oms.srv_code, oms.srv_name, oms.usl_date, oms.age, pol.c_t from (
+oms.fio, oms.patient, oms.c_i, oms.cod, oms.dds, oms.dr, oms.w, oms.s_pol, nvl(oms.sn_pol, '123456789012345') sn_pol, oms.in_date, oms.out_date, oms.org, oms.org_code, oms.final_code, oms.srv_code, oms.srv_name, oms.usl_date, oms.age, pol.c_t from (
 select
 oms.fio,
 oms.patient,
@@ -182,7 +182,7 @@ null usl_date,
 list.age
 from st.ksg_list_v list
 inner join st.oms_list_v st on st.patient = list.patient
-where list.cod like '200%' and list.cod not in ('200530', '200525', '200409', '200510' ) and  list.channel not like 'Городская скорая помощь'
+where list.cod like '200%'
 union all
 select
 st.fio,
@@ -205,30 +205,8 @@ null usl_date,
 list.age
 from st.ksg_list_v list
 inner join st.oms_list_v st on st.patient = list.patient
-where list.cod in ('200530', '200525', '200409', '200510')
-union all
-select
-st.fio,
-oms.patient,
-oms.c_i,
-oms.cod,
-oms.dds,
-oms.dr,
-oms.w,
-oms.s_pol,
-oms.sn_pol,
-oms.in_date,
-oms.out_date,
-oms.org,
-oms.org_code,
-oms.final_code,
-null as srv_code,
-null as srv_name,
-null usl_date,
-oms.age
-from st.ksg_list_v oms
-inner join st.oms_list_v st on st.patient = oms.patient
-where oms.cod not like '%200' and oms.channel not like 'Городская скорая помощь') oms
+where list.cod not in ('200530', '200525', '200409', '200510') and  list.channel not like 'Городская скорая помощь'
+) oms
 inner join oms_pat_pol pol on oms.patient = pol.patient
 `;
 

@@ -84,6 +84,7 @@ export default (router) => router
       const kslpList = await getData(oracledb, config, kslpStr);
       const list = await parseKslp(kslpList);
       const { vmp, ksg } = await filterData(data, list);
+      console.log(vmp,ksg)
       const vmpList = await getVmpData(vmp);
       const ksgList = await dataBuilder(ksg);
       if (id === 'excel') {
