@@ -8,7 +8,7 @@ const dsController = async (ds, reply) => {
         '$or': [
           {
             'MAIN_DS': {
-              '$regex': `${ds}`, 
+              '$regex': `(^|\\s)${ds}`, 
               '$options': 'i'
             }
           }, {
@@ -47,16 +47,24 @@ const dsController = async (ds, reply) => {
 };
 
 const uslController = async (usl, reply) => {
-  const patternMatch = usl.match(/(A\d{2}(\.)?[0-9\.]*)/gi);
-  let regexObj;
-  if (patternMatch) {
-    regexObj = { COD_USL: { $regex: `^${usl}`, $options: 'i' } };
-  } else {
-    const regex = new RegExp(/\b[А-Яа-я]?/);
-    regexObj = { USL_NAME: { $regex: `$${usl}`, $options: 'ig' } };
-  }
   const coll = await model.aggregate([
-    { $match: { ...regexObj, GROUP_NUM: { $in: [27, 76, 77, 78, 79, 80, 81, 82, 83, 84, 96, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257] } } },
+    {
+      '$match': {
+        '$or': [
+          {
+            'COD_USL': {
+              '$regex': `^${usl}`, 
+              '$options': 'i'
+            }
+          }, {
+            'USL_NAME': {
+              '$regex': `(^|\\s)${usl}`, 
+              '$options': 'i'
+            }
+          }
+        ]
+      }
+    },
     {
       $lookup: {
         from: 'ksg_ratio',
@@ -79,6 +87,7 @@ const uslController = async (usl, reply) => {
       },
     },
   ]);
+  console.log(coll)
   reply.send(coll);
 };
 

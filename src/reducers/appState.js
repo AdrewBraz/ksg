@@ -75,13 +75,21 @@ const storeSlice = createSlice({
 
 const getFilters = ({ appState }) => ({ diagnos: appState.diagnos.value, usl: appState.usl.value });
 const getList = ({ appState }) => appState.list;
+const getRegExp = (value) => new RegExp(`(^|\\s)${value}[а-яА-Яa-zA-Z]*`, 'i')
 
 export const FilterSelector = createSelector([getList, getFilters],
   (list = [], filters) => {
     const { diagnos, usl } = filters;
-    const regex1 = new RegExp(`^${diagnos}`, 'i');
-    const regex2 = new RegExp(`^${usl}`, 'i');
-    return list.filter((item) => regex1.test(item.MKB_1) && regex2.test(item.COD_USL));
+    if(diagnos){
+      const regex = getRegExp(diagnos)
+      return list.filter((item) => regex.test(item.MKB_1) || regex.test(item.MAIN_DS))
+    }
+    if(usl){
+      const regex = getRegExp(usl)
+      return list.filter((item) => regex.test(item.COD_USL) || regex.test(item.USL_NAME));
+    } else {
+      return []
+    }
   });
 
 export const {

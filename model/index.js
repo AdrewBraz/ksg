@@ -21,5 +21,17 @@ const KsgSchema = new Schema({
   KSG_NAME: String,
   GROUP_NUM: Number,
 });
-KsgSchema.index({MKB_1:{type: [String], text: true}})
+
+const RatioSchema = new Schema({
+  K: Number,
+  PROFILE_COD: String,
+  PROFILE: String,
+  KSG: String,
+  KSG_NAME: String,
+  GROUP_NUM: Number,
+  DZP: Number
+})
+
+RatioSchema.index({KSG: 1})
+
 export default mongoose.model('KSG', KsgSchema, 'ksg');

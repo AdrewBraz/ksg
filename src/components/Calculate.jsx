@@ -113,7 +113,7 @@ const Search = () => {
             {usl.type === 'input' ? (
               <SearchInput
                 status={status}
-                stringLength={3}
+                stringLength={4}
                 id="usl"
                 pathname={pathname}
                 value={usl.value}
