@@ -35,6 +35,7 @@ export const getList = ({ compState }) => compState.list;
 const getValue = ({ appState }) => appState.value;
 
 export const CompSelector = createSelector([getList, getValue], (list, value) => {
+  console.log(list, value)
   const regex = new RegExp(`^${value}$`, 'gi');
   return list.filter((item) => item.MKB_1.search(regex) !== -1);
 });

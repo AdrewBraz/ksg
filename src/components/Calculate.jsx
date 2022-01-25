@@ -98,7 +98,7 @@ const Search = () => {
           <Col xs={3}>
             {diagnos.type === 'input' ? (
               <SearchInput
-                stringLength={2}
+                stringLength={3}
                 status={status}
                 id="diagnos"
                 pathname={pathname}

@@ -42,7 +42,7 @@ const dsController = async (ds, reply) => {
       },
     },
   ]);
-  console.log(coll)
+  console.log(coll.length)
   reply.send(coll);
 };
 
