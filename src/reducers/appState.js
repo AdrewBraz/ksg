@@ -1,4 +1,5 @@
 import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import createSelectorCreator from 'reselect';
 import axios from 'axios';
 import { LOCATION_CHANGE } from 'connected-react-router';
 
@@ -73,18 +74,29 @@ const storeSlice = createSlice({
   },
 });
 
+
 const getFilters = ({ appState }) => ({ diagnos: appState.diagnos.value, usl: appState.usl.value });
 const getList = ({ appState }) => appState.list;
 const getRegExp = (value) => new RegExp(`(^|\\s)${value}[а-яА-Яa-zA-Z]*`, 'i')
+const getFilteredList = (list, regex, type) =>{
+  if(type === 'DIAG'){
+    return list.filter((item) => regex.test(item.MKB_1) || regex.test(item.MAIN_DS))
+  } else if( type === 'USL'){
+    list.filter((item) => regex.test(item.COD_USL) || regex.test(item.USL_NAME))
+  }
+  return list;
+} 
 export const FilterSelector = createSelector([getList, getFilters],
   (list = [], filters) => {
     const { diagnos, usl } = filters;
     if(diagnos){
-      const regex = getRegExp(diagnos)
-      return list.filter((item) => regex.test(item.MKB_1) || regex.test(item.MAIN_DS))
-    }
-    const regex = getRegExp(usl)
-    return list.filter((item) =>regex.test(item.COD_USL) || regex.test(item.USL_NAME));
+        const regex = getRegExp(diagnos)
+        const newList = getFilteredList(list, regex, 'DIAG')
+        return newList;
+      }
+      const regex = getRegExp(usl)
+      const newList = getFilteredList(list, regex, 'USL')
+      return newList;
   });
 
 export const {

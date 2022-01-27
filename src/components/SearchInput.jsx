@@ -31,11 +31,11 @@ const SearchInput = (props) => {
     fetchData, stringLength, pathname, id, value, status, addTextValue, placeholder,
   } = props;
   const inputRef = useRef(null);
-  const list = useSelector(FilterSelector);
+  const { filteredList: list } = useSelector(FilterSelector);
   const dispatch = useDispatch();
   const previousState = usePrevious(list);
   useEffect(() => {
-    if (previousState && !isEqual(previousState, list)) {
+    if (previousState && !isEqual(previousState, list) || typeof previousState !== "undefined") {
       dispatch(actions.addState(list));
     }
   }, [list]);
