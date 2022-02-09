@@ -91,12 +91,13 @@ export const FilterSelector = createSelector([getList, getFilters],
     const { diagnos, usl } = filters;
     if(diagnos){
         const regex = getRegExp(diagnos)
-        const newList = getFilteredList(list, regex, 'DIAG')
-        return newList;
+        return getFilteredList(list, regex, 'DIAG')
       }
+    if(usl){
       const regex = getRegExp(usl)
-      const newList = getFilteredList(list, regex, 'USL')
-      return newList;
+      return getFilteredList(list, regex, 'USL')
+    }
+    return []
   });
 
 export const {

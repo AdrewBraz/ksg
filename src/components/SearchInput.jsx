@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sortBy, uniqBy, isEqual } from 'lodash';
 import Autosuggest from 'react-autosuggest';
 import actions from '../actions';
+import hash from 'hash.js'
 import { changeType, FilterSelector } from '../reducers/appState';
 
 const renderFunctions = {
@@ -31,11 +32,12 @@ const SearchInput = (props) => {
     fetchData, stringLength, pathname, id, value, status, addTextValue, placeholder,
   } = props;
   const inputRef = useRef(null);
-  const { filteredList: list } = useSelector(FilterSelector);
+  const list = useSelector(FilterSelector);
+  console.log(list)
   const dispatch = useDispatch();
   const previousState = usePrevious(list);
   useEffect(() => {
-    if (previousState && !isEqual(previousState, list) || typeof previousState !== "undefined") {
+    if (previousState && !isEqual(previousState, list)) {
       dispatch(actions.addState(list));
     }
   }, [list]);
@@ -52,6 +54,7 @@ const SearchInput = (props) => {
       id === 'diagnos' ? dispatch(actions.changeType({ id: 'usl', type: 'input' }))
         : dispatch(actions.changeType({ id: 'diagnos', type: 'input' }));
     }
+    console.log(hash.sha256().update(newValue).digest('hex'))
     await dispatch(addTextValue(newValue));
     if (newValue.length === stringLength) {
       await getData(newValue);

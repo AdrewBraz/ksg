@@ -50,6 +50,7 @@
     "fastify-sensible": "^3.1.0",
     "fastify-static": "^3.3.0",
     "formik": "^2.2.6",
+    "hash.js": "^1.1.7",
     "history": "^4.10.1",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
