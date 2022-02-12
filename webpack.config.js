@@ -1,3 +1,4 @@
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -22,7 +23,9 @@ module.exports = {
     }),
   ],
   devServer: {
-    publicPath: '/assets/',
+    static: {
+      directory: path.join( __dirname, 'assets'),
+    }
   },
   module: {
     rules: [
